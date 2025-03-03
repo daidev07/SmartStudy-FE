@@ -81,6 +81,7 @@ export default {
                 }
             } catch (error) {
                 if (error.response.status === 400) {
+                    console.log("ERROR: ", error);
                     toast.error("Username or password is incorrect. Please try again!");
                 } else {
                     toast.error("An error occurred while logging in. Please try again later.");

@@ -260,6 +260,10 @@ export default {
     margin-top: 95px;
 }
 
+#unansweredModal {
+    margin-top: 100px;
+}
+
 .container-load {
     margin-top: 91px;
 }

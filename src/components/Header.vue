@@ -17,17 +17,20 @@
                     <router-link to="/report" :class="getActiveClass('/report')">
                         Report</router-link>
                 </li>
-                <li>
+                <!-- <li>
                     <router-link to="/about" :class="getActiveClass('/about')">About</router-link>
-                </li>
+                </li> -->
             </ul>
         </nav>
         <div class="nav-right d-flex justify-content-end align-items-center">
-            <div v-if="userInfo" class="user-info d-flex justify-content-end align-items-center">
+            <div v-if="userInfo" class="user-info d-flex justify-content-end align-items-center dropdown">
                 <img :src="userInfo?.avatarFile || require('@/assets/nonAvatar.png')" alt="User Avatar"
                     class="avatar me-2" v-tooltip:bottom="'Update your avatar'" data-bs-toggle="modal"
                     data-bs-target="#updateAvatarModal" style="cursor: pointer;" />
-                <span>{{ userInfo.name }}</span>
+                <span class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">{{ userInfo.name }}</span>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" @click="logout">Log out</a></li>
+                </ul>
             </div>
             <router-link v-else to="/login"
                 class="login-btn text-white text-center rounded-3 p-2 w-25">Login</router-link>
@@ -48,7 +51,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
                             id="btnCloseUpdateAvatarModal">Close</button>
-                        <button type="button" class="btn btn-danger" @click="saveAvatar()">
+                        <button type="button" class="btn btn-danger" @click="saveAvatar()" :disabled="isSpinnerLoading">
                             <span v-if="isSpinnerLoading" class="spinner-border spinner-border-sm" role="status"
                                 aria-hidden="true">
                             </span>
@@ -93,6 +96,10 @@ export default {
     },
     methods: {
         ...mapActions(['saveUserInfo']),
+        async logout() {
+            localStorage.removeItem('token');
+            this.$router.push('/login');
+        },
         async checkUserLoggedIn() {
             const token = localStorage.getItem('token');
             if (token) {
@@ -157,6 +164,10 @@ export default {
     transition: box-shadow 0.3s ease-in-out;
     position: fixed;
     z-index: 1;
+}
+
+.modal {
+    margin-top: 100px;
 }
 
 .nav-left {

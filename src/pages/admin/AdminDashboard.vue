@@ -13,9 +13,16 @@
                     </router-link>
                 </li>
             </ul>
+            <div>
+                <a>
+                    <router-link to="/" class="nav-link text-white" @mouseover="onHover($event)"
+                        @mouseout="onLeave($event)">
+                        Homepage
+                    </router-link>
+                </a>
+            </div>
             <div class="logout-button mt-auto mb-4">
-                <a href="#" class="nav-link text-white" @mouseover="onHover($event)" @mouseout="onLeave($event)"
-                    @click="setActiveComponent('Logout')">
+                <a href="#" class="nav-link text-white" @click="logout">
                     <i class="bi bi-box-arrow-right"></i> Logout
                 </a>
             </div>
@@ -81,6 +88,10 @@ export default {
         }
     },
     methods: {
+        async logout() {
+            localStorage.removeItem('token');
+            this.$router.push('/login');
+        },
         async checkUserPermit() {
             const token = localStorage.getItem('token');
             if (token) {

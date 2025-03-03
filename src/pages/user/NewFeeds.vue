@@ -5,6 +5,7 @@
             <span class="text-body-tertiary">What's on your mind? Click to post something ...
                 <i class="bi bi-balloon-heart"></i></span>
         </div>
+        <!-- ADD NEW POST MODAL -->
         <div class="modal fade" id="addNewPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="addNewPostModal" aria-hidden="true">
             <div class="modal-dialog">
@@ -27,7 +28,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                             id="btnCloseNewPostModal">Cancel</button>
-                        <button type="button" class="btn btn-primary" @click="submitPost">
+                        <button type="button" class="btn btn-primary" @click="submitPost" :disabled="isSpinnerLoading">
                             <span v-if="isSpinnerLoading" class="spinner-border spinner-border-sm" role="status"
                                 aria-hidden="true">
                             </span>
@@ -74,7 +75,7 @@
                                     </div>
                                     <div class="post-title mb-2">{{ newsfeed.content }}</div>
                                     <div class="mb-3 text-center">
-                                        <img :src="newsfeed.imageFile" alt="Post Image"
+                                        <img v-if="newsfeed.imageFile" :src="newsfeed.imageFile" alt="Post Image"
                                             class="newfeeds-post-image rounded-3 w-50" />
                                     </div>
                                     <div class="text-end">
@@ -140,7 +141,7 @@
                     </div>
                 </div>
             </div>
-            <div class="post-title mb-2">{{ newfeed.content }}</div>
+            <div class="post-title mb-2 mt-2">{{ newfeed.content }}</div>
             <div class="d-flex jsutiify-content-between gap-3">
                 <div class="img-newsfeed w-50 text-center border-end">
                     <img :src="newfeed.imageFile" alt="Post Image" class="newfeeds-post-image rounded-3 w-75" />
@@ -442,8 +443,8 @@ export default {
             this.selectedFile = event.target.files[0];
         },
         async submitPost() {
-            if (!this.newPostContent || !this.selectedFile) {
-                alert("Pleses enter content or choose image");
+            if (!this.newPostContent) {
+                toast.warning("Please fill in all fields!");
                 return;
             }
             this.isSpinnerLoading = true;
@@ -467,7 +468,11 @@ export default {
                 this.newPostContent = "";
                 this.selectedFile = null;
                 document.getElementById("btnCloseNewPostModal").click();
-                toast.success("Post successfully!");
+                if (this.getUserInfo.role === 'STUDENT') {
+                    toast.success("Post successfully! Please wait for teacher's permit.");
+                } else {
+                    toast.success("Post successfully!");
+                }
                 this.fetchNewfeeds();
                 this.isSpinnerLoading = false;
             }
@@ -490,6 +495,10 @@ export default {
 
 .new-post {
     cursor: pointer;
+}
+
+.modal {
+    margin-top: 100px;
 }
 
 .new-post .post-input {

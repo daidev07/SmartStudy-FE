@@ -36,7 +36,8 @@
                 </div>
                 <div class="mb-2 d-flex">
                     <label for="listenAnswerFile" class="form-label w-50">Listening Answer File
-                        <i class="bi bi-exclamation-diamond me-1"></i>:</label>
+                        <i class="bi bi-exclamation-diamond me-1"
+                            v-tooltip:bottom="'File có quy tắc sau: bỏ qua hàng đầu tiên, cột đầu tiên là số của câu hỏi. Cột 2 là nội dung câu hỏi. Cột 3, 4, 5, 6 là 4 đáp án. Cột 6 là số thứ tự của cột là đáp án đúng. Cột 7 là nội dung thêm'"></i>:</label>
                     <input type="file" class="form-control" @change="onFileChange($event, 'listenAnswerFile')"
                         accept=".xls,.xlsx" required />
                 </div>
@@ -56,7 +57,10 @@
                 </div>
                 <div class="mb-2 d-flex">
                     <label for="readingAnswerFile" class="form-label w-50">Reading Answer File
-                        <i class="bi bi-exclamation-diamond me-1"></i>:</label>
+                        <i class="bi bi-exclamation-diamond me-1"
+                            v-tooltip:bottom="'File có quy tắc sau: bỏ qua hàng đầu tiên, cột đầu tiên là số của câu hỏi. Cột 2 là nội dung câu hỏi. Cột 3, 4, 5, 6 là 4 đáp án. Cột 6 là số thứ tự của cột là đáp án đúng. Cột 7 là nội dung thêm'">
+
+                        </i>:</label>
                     <input type="file" class="form-control" @change="onFileChange($event, 'readingAnswerFile')"
                         accept=".xls,.xlsx" required />
                 </div>

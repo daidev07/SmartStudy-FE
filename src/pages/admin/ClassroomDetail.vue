@@ -83,8 +83,9 @@
                     <tbody v-if="students && students.length" class="table-group-divider">
                         <tr v-for="(student, index) in students" :key="student.id" class="align-middle ">
                             <td class="text-center">{{ index + 1 }}</td>
-                            <td class="text-center"><img :src="student.avatarUrl || require('@/assets/nonAvatar.png')"
-                                    style="width: 50%;" />
+                            <td class="text-center">
+                                <img class=" rounded-5" :src="student.avatarFile || require('@/assets/nonAvatar.png')"
+                                    width="50" height="50" />
                             </td>
                             <td class="text-center fw-bold">{{ student.name }}</td>
                             <td class="text-center">{{ student.email }}</td>
@@ -127,7 +128,7 @@
                     </tbody>
                     <tbody v-else>
                         <tr>
-                            <td colspan="8" class="text-center text-muted">No classworks available.</td>
+                            <td colspan="8" class="text-center text-muted">No student available.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -308,6 +309,7 @@ export default {
     mounted() {
         this.fetchClassDetail();
         this.fetchExams();
+        this.fetchClasswork();
     },
     methods: {
         formatDate,
@@ -365,7 +367,8 @@ export default {
                     toast.success("Create student successfully!");
                 }
             } catch (error) {
-                if (error.response.data.code == 413) {
+                console.log('error:', error);
+                if (error.response.data.code == 414) {
                     toast.error("Username already exists. Try another one!");
                 }
             } finally {
